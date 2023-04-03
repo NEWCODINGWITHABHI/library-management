@@ -1,0 +1,28 @@
+.register{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.register form{
+    width: 50%;
+   min-height: 50%;
+    border: 5px solid rgb(39, 145, 113);
+    padding: 2rem;
+}
+.register form .input-control{
+    display: flex;
+    flex-direction: column;
+    margin: 1rem;
+    gap: 5px;
+}
+.register form .input-control input{
+    max-width:95% ;
+    padding: 0.5rem 1rem;
+}
+.register form button{
+    max-width: 100%;
+    text-align: center;
+    padding: 0.5rem 1rem;
+}
