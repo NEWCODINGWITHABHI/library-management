@@ -34,7 +34,7 @@ function submitBookData(e){
   }
 }
 function sendBookData(){
-  fetch("http://localhost:8000/book", {
+  fetch("https://librarymanagementbackend-production.up.railway.app/book", {
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
@@ -43,11 +43,10 @@ function sendBookData(){
     body: JSON.stringify(bookData),
   })
     .then(function (res) {
-   
       return res.json();
-    }).then((data)=>{
-      setBooksCollection([...data])
-
+    })
+    .then((data) => {
+      setBooksCollection([...data]);
     })
     .catch(function (res) {
       console.log(res);
@@ -62,7 +61,9 @@ function sendBookData(){
 }
 
 async function getBookData(){
-const res = await fetch("http://localhost:8000/book");
+const res = await fetch(
+  "https://librarymanagementbackend-production.up.railway.app/book"
+);
 const data=await res.json();
 setBooksCollection([...data]);
 
@@ -74,9 +75,12 @@ useEffect(()=>{
 
 function deleteBook(id){
 
-  fetch("http://localhost:8000/book/" + id, {
-    method: "DELETE",
-  })
+  fetch(
+    "https://librarymanagementbackend-production.up.railway.app/book/" + id,
+    {
+      method: "DELETE",
+    }
+  )
     .then((res) => res.json())
     .then((res) => console.log(res));
     getBookData();
@@ -91,13 +95,17 @@ function updateBook(id,book){
   else{
      setUpdatedBook({ ...updatedBook,...bookData,  });
      console.log(updatedBook,"iddd")
-    fetch("http://localhost:8000/update-book/" + updatedBook._id, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookData),
-    });
+    fetch(
+      "https://librarymanagementbackend-production.up.railway.app/update-book/" +
+        updatedBook._id,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookData),
+      }
+    );
     setBookData({title:"",author:"",price:"",category:""})
     setIsUpdate(false);
   }
