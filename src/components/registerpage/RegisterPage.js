@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useNavigate } from "react-router-dom";
 import "./RegisterPage.css"
 function RegisterPage() {
    const [user,setUser]=useState({
@@ -8,6 +9,7 @@ function RegisterPage() {
     email:"",
     password:"",
    })
+   const navigate = useNavigate();
     function handleForm(e){
       
         setUser({
@@ -21,16 +23,14 @@ function RegisterPage() {
      sendFormData();
     }
     async function sendFormData(){
-        const res = await fetch(
-          "https://librarymanagementbackend-production.up.railway.app/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-          }
-        );
+
+        const res = await fetch("http://localhost:8000/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        });
         setUser({
           name:"",
           username:"",
@@ -38,6 +38,7 @@ function RegisterPage() {
           password:"",
           phonenumber:""
         })
+        navigate("/login");
     }
   return (
     <div className='register'>
@@ -52,26 +53,26 @@ function RegisterPage() {
         </div>
         <div className='input-control'>
             <label htmlFor="username">Username</label>
-            <input type="text" id="username" name="username" value={user.username} 
+            <input required type="text" id="username" name="username" value={user.username} 
             onChange={(e)=>handleForm(e)}
              />
         </div>
         <div className='input-control'>
             <label htmlFor="phonenumber">Phone Number</label>
-            <input type="text" id="phonenumber" name="phonenumber" value={user.phonenumber}
+            <input required type="number" id="phonenumber" name="phonenumber" value={user.phonenumber}
             onChange={(e)=>handleForm(e)}
              />
         </div>
         <div className='input-control'>
             <label htmlFor="email">Email</label>
-            <input type="text" id="email" name="email"
+            <input required type="email" id="email" name="email"
             value={user.email} 
             onChange={(e)=>handleForm(e)}
              />
         </div>
         <div className='input-control'>
             <label htmlFor="password">Password</label>
-            <input type="text" id="password" name="password" value={user.password}
+            <input required type="password" id="password" name="password" value={user.password}
             onChange={(e)=>handleForm(e)}
              />
         </div>

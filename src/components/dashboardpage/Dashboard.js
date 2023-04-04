@@ -1,116 +1,113 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import "./Dashboard.css";
 
 function Dashboard() {
-const [bookData,setBookData]=useState({
-  title:"",
-  author:"",
-  category:"",
-  price:"",
-})
-const [updatedBook,setUpdatedBook]=useState({  title:"",
-  author:"",
-  category:"",
-  price:"",
-  _id:""
-})
-const [isUpdate,setIsUpdate]=useState(false);
-const [booksCollection,setBooksCollection]=useState([]);
+  const [bookData, setBookData] = useState({
+    title: "",
+    author: "",
+    category: "",
+    price: "",
+  });
+  const [updatedBook, setUpdatedBook] = useState({
+    title: "",
+    author: "",
+    category: "",
+    price: "",
+    _id: "",
+  });
+  const [isUpdate, setIsUpdate] = useState(false);
+  const [isAdded, setIsAdded] = useState(true);
+  const [isDelete, setIsDelete] = useState(false);
+  const [booksCollection, setBooksCollection] = useState([]);
 
-
-function handleBookData(e){
-  setBookData({
-    ...bookData,
-    [e.target.name]:e.target.value,
-  })
-  console.log(bookData);
-}
-
-function submitBookData(e){
-  e.preventDefault();
-  console.log(bookData,"JJJJJJJJ");
-  if(isUpdate){
-    sendBookData()
-  }
-}
-function sendBookData(){
-  fetch("https://librarymanagementbackend-production.up.railway.app/book", {
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    method: "POST",
-    body: JSON.stringify(bookData),
-  })
-    .then(function (res) {
-      return res.json();
-    })
-    .then((data) => {
-      setBooksCollection([...data]);
-    })
-    .catch(function (res) {
-      console.log(res);
+  function handleBookData(e) {
+    setBookData({
+      ...bookData,
+      [e.target.name]: e.target.value,
     });
-     setBookData({
-       title: "",
-       author: "",
-       price: "",
-       category: "",
-      
-     });
-}
-
-async function getBookData(){
-const res = await fetch(
-  "https://librarymanagementbackend-production.up.railway.app/book"
-);
-const data=await res.json();
-setBooksCollection([...data]);
-
-}
-useEffect(()=>{
-
-    getBookData();
-},[bookData,isUpdate])
-
-function deleteBook(id){
-
-  fetch(
-    "https://librarymanagementbackend-production.up.railway.app/book/" + id,
-    {
-      method: "DELETE",
-    }
-  )
-    .then((res) => res.json())
-    .then((res) => console.log(res));
-    getBookData();
-}
-function updateBook(id,book){
-  if(!isUpdate){
-
-    setBookData(book);
-    setUpdatedBook({...book})
-    setIsUpdate(true)
   }
-  else{
-     setUpdatedBook({ ...updatedBook,...bookData,  });
-     console.log(updatedBook,"iddd")
-    fetch(
-      "https://librarymanagementbackend-production.up.railway.app/update-book/" +
-        updatedBook._id,
-      {
+
+  function submitBookData(e) {
+    e.preventDefault();
+    console.log(bookData, "JJJJJJJJ", isAdded);
+    if (!isUpdate) {
+      const { title, author, price, category } = bookData;
+      if (!title && !author && !price && !category) {
+        alert("Book field can not be empty ");
+        return;
+      }
+
+      sendBookData();
+    }
+  }
+  function sendBookData() {
+    fetch("http://localhost:8000/book", {
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify(bookData),
+    })
+      .then(function (res) {
+        return res.json();
+      })
+      .then((data) => {
+        setBooksCollection([...data]);
+      })
+      .catch(function (res) {
+        console.log(res);
+      });
+    setBookData({
+      title: "",
+      author: "",
+      price: "",
+      category: "",
+    });
+  }
+
+  async function getBookData() {
+    const res = await fetch("http://localhost:8000/book");
+    const data = await res.json();
+    setBooksCollection([...data]);
+
+  }
+  useEffect(() => {
+    getBookData();
+    console.log("object");
+  }, [bookData,isAdded, isDelete, isUpdate]);
+
+  async function deleteBook(id) {
+   await  fetch("http://localhost:8000/book/" + id, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((res) => console.log(res));
+    setIsDelete(!isDelete);
+  }
+  function updateBook(id, book) {
+    if (!isUpdate) {
+      setBookData({ ...book });
+      setUpdatedBook({ ...book });
+      setIsUpdate((prev) => !prev);
+      setIsAdded(false);
+    } else {
+      setUpdatedBook({ ...updatedBook });
+      console.log(updatedBook, "iddd");
+      fetch("http://localhost:8000/update-book/" + updatedBook._id, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
+
         body: JSON.stringify(bookData),
-      }
-    );
-    setBookData({title:"",author:"",price:"",category:""})
-    setIsUpdate(false);
+      });
+      getBookData();
+      setBookData({ ...updateBook });
+      setIsUpdate((prev) => !prev);
+      setIsAdded(true);
+    }
   }
-   
-}
   return (
     <div className="dashboard">
       <div className="header">
@@ -159,8 +156,10 @@ function updateBook(id,book){
             />
           </div>
           <div className="input-control">
-            {isUpdate ? (
-              <button type="button" onClick={()=>updateBook()}>Update Book</button>
+            {isAdded == false ? (
+              <button type="button" onClick={() => updateBook()}>
+                Update Book
+              </button>
             ) : (
               <button>Add Book</button>
             )}
@@ -180,10 +179,18 @@ function updateBook(id,book){
               </p>
 
               <div className="upd-delete-btn-box">
-                <button id="update" onClick={() => updateBook(book._id, book)}>
+                <button
+                  type="button"
+                  id="update"
+                  onClick={() => updateBook(book._id, book)}
+                >
                   Update
                 </button>
-                <button id="delete" onClick={() => deleteBook(book._id)}>
+                <button
+                  type="button"
+                  id="delete"
+                  onClick={() => deleteBook(book._id)}
+                >
                   Delete
                 </button>
               </div>
@@ -195,4 +202,4 @@ function updateBook(id,book){
   );
 }
 
-export default Dashboard
+export default Dashboard;

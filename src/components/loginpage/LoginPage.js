@@ -1,12 +1,13 @@
 import React from 'react'
 import { useState } from 'react';
-function LoginPage() {
+import {useNavigate} from "react-router-dom";
+function LoginPage({setLoginUser}) {
     const [user, setUser] = useState({
-    
       username: "",
       email: "",
       password: "",
     });
+    const navigate=useNavigate();
     function handleForm(e) {
       setUser({
         ...user,
@@ -19,16 +20,27 @@ function LoginPage() {
       sendFormData();
     }
     async function sendFormData() {
-      const res = await fetch(
-        "https://librarymanagementbackend-production.up.railway.app/login",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        }
-      );
+
+      const {email ,password,username}=user;
+      if(!email&&!username){
+        alert("Email or Username is Empty")
+        return ;
+      }
+      const res = await fetch("http://localhost:8000/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      const data=await res.json();
+      console.log(data,"KKKKKKKLLLLLLL")
+      if(res.status==200){
+        navigate("/dashboard");
+        alert("hhhhhh")
+        alert(data.message);
+        setLoginUser(data.user);
+      }
     }
     return (
       <div className="register">
@@ -43,11 +55,11 @@ function LoginPage() {
               onChange={(e) => handleForm(e)}
             />
           </div>
-
+               <h3 style={{textAlign:"center",margin:"0px",padding:"0px"}}>OR</h3>
           <div className="input-control">
             <label htmlFor="email">Email</label>
             <input
-              type="text"
+              type="email"
               id="email"
               name="email"
               value={user.email}
@@ -57,7 +69,8 @@ function LoginPage() {
           <div className="input-control">
             <label htmlFor="password">Password</label>
             <input
-              type="text"
+              type="password"
+              required
               id="password"
               name="password"
               value={user.password}
@@ -65,14 +78,15 @@ function LoginPage() {
             />
           </div>
           <div className="input-control">
-            <button style={{ maxWidth: "95%" }}>Login</button>
+            <button style={{ maxWidth: "95%" }}
+            >Login</button>
           </div>
           <div className="input-control">
             <div styel={{ Width: "100%" }}>
-              <button style={{ width: "150px" }}>
+              <button type="button" style={{ width: "150px" }}>
                 Forget Password
               </button>
-              <button style={{ minWidth: "150px", marginLeft: "20px" }}>
+              <button type="button" style={{ minWidth: "150px", marginLeft: "20px" }}>
                 Resend Verification
               </button>
             </div>
