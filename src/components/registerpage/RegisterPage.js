@@ -23,25 +23,30 @@ function RegisterPage() {
      sendFormData();
     }
     async function sendFormData(){
-
-        const res = await fetch(
-          "https://librarymanagementbackend-production.up.railway.app/register",
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(user),
-          }
-        );
-        setUser({
-          name:"",
-          username:"",
-          email:"",
-          password:"",
-          phonenumber:""
-        })
-        navigate("/login");
+    console.log("send data")
+      try{
+     const res = await fetch(
+       "https://librarymanagementbackend-production.up.railway.app/register",
+       {
+         method: "POST",
+         headers: {
+           "Content-Type": "application/json",
+         },
+         body: JSON.stringify(user),
+       }
+     );
+     setUser({
+       name: "",
+       username: "",
+       email: "",
+       password: "",
+       phonenumber: "",
+     });
+     navigate("/login");
+      }catch(err){
+        console.log(err);
+      }
+      
     }
   return (
     <div className='register'>
