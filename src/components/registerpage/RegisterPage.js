@@ -26,7 +26,7 @@ function RegisterPage() {
     console.log("send data")
       try{
      const res = await fetch(
-       "https://library-management-production-b683.up.railway.app/register",
+       "https://library-management-weld.vercel.app/register",
        {
          method: "POST",
          headers: {
@@ -35,7 +35,7 @@ function RegisterPage() {
          body: JSON.stringify(user),
        }
      );
-     console.log("DDDDDDDDDDD");
+ 
      const data=await res.json();
      if(data.status==400){
       alert(data.message);

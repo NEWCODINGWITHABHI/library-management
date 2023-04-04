@@ -29,7 +29,7 @@ function Dashboard() {
 
   function submitBookData(e) {
     e.preventDefault();
-    console.log(bookData, "JJJJJJJJ", isAdded);
+
     if (!isUpdate) {
       const { title, author, price, category } = bookData;
       if (!title && !author && !price && !category) {
@@ -41,7 +41,7 @@ function Dashboard() {
     }
   }
   function sendBookData() {
-    fetch("https://library-management-production-b683.up.railway.app/book", {
+    fetch("https://library-management-weld.vercel.app/book", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -67,9 +67,7 @@ function Dashboard() {
   }
 
   async function getBookData() {
-    const res = await fetch(
-      "https://library-management-production-b683.up.railway.app/book"
-    );
+    const res = await fetch("https://library-management-weld.vercel.app/book");
     const data = await res.json();
     setBooksCollection([...data]);
 
@@ -80,12 +78,9 @@ function Dashboard() {
   }, [bookData,isAdded, isDelete, isUpdate]);
 
   async function deleteBook(id) {
-   await fetch(
-     "https://library-management-production-b683.up.railway.app/book/" + id,
-     {
-       method: "DELETE",
-     }
-   )
+   await fetch("https://library-management-weld.vercel.app/book/" + id, {
+     method: "DELETE",
+   })
      .then((res) => res.json())
      .then((res) => console.log(res));
     setIsDelete(!isDelete);
@@ -99,18 +94,14 @@ function Dashboard() {
     } else {
       setUpdatedBook({ ...updatedBook });
       console.log(updatedBook, "iddd");
-      fetch(
-        "https://library-management-production-b683.up.railway.app/" +
-          updatedBook._id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
+      fetch("https://library-management-weld.vercel.app/" + updatedBook._id, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
 
-          body: JSON.stringify(bookData),
-        }
-      );
+        body: JSON.stringify(bookData),
+      });
       getBookData();
       setBookData({ ...updateBook });
       setIsUpdate((prev) => !prev);
