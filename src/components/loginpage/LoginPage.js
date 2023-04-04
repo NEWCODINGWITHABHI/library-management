@@ -26,13 +26,16 @@ function LoginPage({setLoginUser}) {
         alert("Email or Username is Empty")
         return ;
       }
-      const res = await fetch("http://localhost:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
+      const res = await fetch(
+        "https://librarymanagementbackend-production.up.railway.app/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
       const data=await res.json();
       console.log(data,"KKKKKKKLLLLLLL")
       if(res.status==200){

@@ -24,13 +24,16 @@ function RegisterPage() {
     }
     async function sendFormData(){
 
-        const res = await fetch("http://localhost:8000/register", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(user),
-        });
+        const res = await fetch(
+          "https://librarymanagementbackend-production.up.railway.app/register",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(user),
+          }
+        );
         setUser({
           name:"",
           username:"",
