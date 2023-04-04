@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import {useNavigate} from "react-router-dom";
+import "./LoginPage.css";
 function LoginPage({setLoginUser}) {
     const [user, setUser] = useState({
       username: "",
@@ -16,7 +17,6 @@ function LoginPage({setLoginUser}) {
     }
     function formSubmit(e) {
       e.preventDefault();
-      console.log(user);
       sendFormData();
     }
     async function sendFormData() {
@@ -37,12 +37,15 @@ function LoginPage({setLoginUser}) {
         }
       );
       const data=await res.json();
-      console.log(data,"KKKKKKKLLLLLLL")
-      if(res.status==200){
+      console.log(data,"dataat");
+  
+      if(data.status===200){
         navigate("/dashboard");
-        alert("hhhhhh")
         alert(data.message);
-        setLoginUser(data.user);
+        setLoginUser(data.data);
+      }
+      else{
+        alert(data.message);
       }
     }
     return (
@@ -58,7 +61,9 @@ function LoginPage({setLoginUser}) {
               onChange={(e) => handleForm(e)}
             />
           </div>
-               <h3 style={{textAlign:"center",margin:"0px",padding:"0px"}}>OR</h3>
+          <h3 style={{ textAlign: "center", margin: "0px", padding: "0px" }}>
+            OR
+          </h3>
           <div className="input-control">
             <label htmlFor="email">Email</label>
             <input
@@ -81,15 +86,19 @@ function LoginPage({setLoginUser}) {
             />
           </div>
           <div className="input-control">
-            <button style={{ maxWidth: "95%" }}
-            >Login</button>
+            <button style={{ maxWidth: "95%", backgroundColor: "#0096FF" }}>
+              Login
+            </button>
           </div>
           <div className="input-control">
-            <div styel={{ Width: "100%" }}>
-              <button type="button" style={{ width: "150px" }}>
+            <div className="btn-box" styel={{ Width: "100%" }}>
+              <button type="button" style={{ minWidth: "45%" }}>
                 Forget Password
               </button>
-              <button type="button" style={{ minWidth: "150px", marginLeft: "20px" }}>
+              <button
+                type="button"
+                style={{ minWidth: "45%", marginLeft: "20px" }}
+              >
                 Resend Verification
               </button>
             </div>

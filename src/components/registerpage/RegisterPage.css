@@ -21,8 +21,11 @@
     max-width:95% ;
     padding: 0.5rem 1rem;
 }
-.register form button{
+.register form  button{
     max-width: 100%;
     text-align: center;
     padding: 0.5rem 1rem;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
 }

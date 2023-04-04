@@ -35,6 +35,12 @@ function RegisterPage() {
          body: JSON.stringify(user),
        }
      );
+     const data=await res.json();
+     console.log(data);
+     if(data.status==400){
+      alert(data.message);
+      return;
+     }
      setUser({
        name: "",
        username: "",
@@ -49,48 +55,81 @@ function RegisterPage() {
       
     }
   return (
-    <div className='register'>
-      <form action=""
-      onSubmit={formSubmit}
-      >
-        <div className='input-control'>
-            <label htmlFor="name">Name</label>
-            <input type="text" id="name" name="name" value={user.name} 
-            onChange={(e)=>handleForm(e)}
-             />
+    <div className="register">
+      <form action="" onSubmit={formSubmit}>
+        <div className="input-control">
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            name="name"
+            value={user.name}
+            onChange={(e) => handleForm(e)}
+          />
         </div>
-        <div className='input-control'>
-            <label htmlFor="username">Username</label>
-            <input required type="text" id="username" name="username" value={user.username} 
-            onChange={(e)=>handleForm(e)}
-             />
+        <div className="input-control">
+          <label htmlFor="username">Username</label>
+          <input
+            required
+            type="text"
+            id="username"
+            name="username"
+            value={user.username}
+            onChange={(e) => handleForm(e)}
+          />
         </div>
-        <div className='input-control'>
-            <label htmlFor="phonenumber">Phone Number</label>
-            <input required type="number" id="phonenumber" name="phonenumber" value={user.phonenumber}
-            onChange={(e)=>handleForm(e)}
-             />
+        <div className="input-control">
+          <label htmlFor="phonenumber">Phone Number</label>
+          <input
+            required
+            type="number"
+            id="phonenumber"
+            name="phonenumber"
+            value={user.phonenumber}
+            onChange={(e) => handleForm(e)}
+          />
         </div>
-        <div className='input-control'>
-            <label htmlFor="email">Email</label>
-            <input required type="email" id="email" name="email"
-            value={user.email} 
-            onChange={(e)=>handleForm(e)}
-             />
+        <div className="input-control">
+          <label htmlFor="email">Email</label>
+          <input
+            required
+            type="email"
+            id="email"
+            name="email"
+            value={user.email}
+            onChange={(e) => handleForm(e)}
+          />
         </div>
-        <div className='input-control'>
-            <label htmlFor="password">Password</label>
-            <input required type="password" id="password" name="password" value={user.password}
-            onChange={(e)=>handleForm(e)}
-             />
+        <div className="input-control">
+          <label htmlFor="password">Password</label>
+          <input
+            required
+            type="password"
+            id="password"
+            name="password"
+            value={user.password}
+            onChange={(e) => handleForm(e)}
+          />
         </div>
-        <div className='input-control'>
-            <button style={{maxWidth:"95%"}}
-            >Register</button>
+        <div className="input-control reg-btn-box">
+          <button style={{ maxWidth: "95%", backgroundColor: "#0BDA51" }}>
+            Register
+          </button>
+          <button
+            onClick={() => navigate("/login")}
+            type="button"
+            style={{
+              maxWidth: "95%",
+              marginTop: "10px",
+              backgroundColor: "#0096FF",
+            }}
+          >
+            Login
+          </button>
         </div>
       </form>
     </div>
-  )
+  );
 }
 
 export default RegisterPage

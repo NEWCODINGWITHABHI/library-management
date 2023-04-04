@@ -81,7 +81,7 @@ function Dashboard() {
 
   async function deleteBook(id) {
    await fetch(
-     "https://librarymanagementbackend-production.up.railway.app/book/" + id,
+     "https://librarymanagementbackend-production.up.railway.app/" + id,
      {
        method: "DELETE",
      }
@@ -100,7 +100,7 @@ function Dashboard() {
       setUpdatedBook({ ...updatedBook });
       console.log(updatedBook, "iddd");
       fetch(
-        "https://librarymanagementbackend-production.up.railway.app/update-book/" +
+        "https://librarymanagementbackend-production.up.railway.app/" +
           updatedBook._id,
         {
           method: "PUT",

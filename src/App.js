@@ -6,16 +6,19 @@ import RegisterPage from "./components/registerpage/RegisterPage";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [user,setLoginUser]=useState({})
+  const [user,setLoginUser]=useState("")
   return (
     <div className="App">
       <BrowserRouter>
         <Routes>
-            <Route path="/register" element={<RegisterPage />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/login" element={<LoginPage />} />
-           <Route  path="/" element={<RegisterPage/>} />
-         
+          <Route path="/register" element={<RegisterPage />} />
+          {user ? <Route path="/dashboard" element={<Dashboard />} />:<Route path="/" element={<RegisterPage />} />}
+
+          <Route
+            path="/login"
+            element={<LoginPage setLoginUser={setLoginUser} />}
+          />
+
           {/* {true ? (
             <Route path="/" element={<Dashboard />} />
           ) : (
