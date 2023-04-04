@@ -26,7 +26,7 @@ function RegisterPage() {
     console.log("send data")
       try{
      const res = await fetch(
-       "https://librarymanagementbackend-production.up.railway.app/register",
+       "https://library-management-production-b683.up.railway.app/register",
        {
          method: "POST",
          headers: {
@@ -35,8 +35,8 @@ function RegisterPage() {
          body: JSON.stringify(user),
        }
      );
+     console.log("DDDDDDDDDDD");
      const data=await res.json();
-     console.log(data);
      if(data.status==400){
       alert(data.message);
       return;

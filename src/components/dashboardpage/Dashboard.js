@@ -41,7 +41,7 @@ function Dashboard() {
     }
   }
   function sendBookData() {
-    fetch("https://librarymanagementbackend-production.up.railway.app/book", {
+    fetch("https://library-management-production-b683.up.railway.app/book", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -68,7 +68,7 @@ function Dashboard() {
 
   async function getBookData() {
     const res = await fetch(
-      "https://librarymanagementbackend-production.up.railway.app/book"
+      "https://library-management-production-b683.up.railway.app/book"
     );
     const data = await res.json();
     setBooksCollection([...data]);
@@ -81,7 +81,7 @@ function Dashboard() {
 
   async function deleteBook(id) {
    await fetch(
-     "https://librarymanagementbackend-production.up.railway.app/" + id,
+     "https://library-management-production-b683.up.railway.app/book/" + id,
      {
        method: "DELETE",
      }
@@ -100,7 +100,7 @@ function Dashboard() {
       setUpdatedBook({ ...updatedBook });
       console.log(updatedBook, "iddd");
       fetch(
-        "https://librarymanagementbackend-production.up.railway.app/" +
+        "https://library-management-production-b683.up.railway.app/" +
           updatedBook._id,
         {
           method: "PUT",
@@ -147,7 +147,7 @@ function Dashboard() {
           <div className="input-control">
             <label htmlFor="price">Price</label>
             <input
-              type="text"
+              type="number"
               id="price"
               onChange={(e) => handleBookData(e)}
               name="price"
