@@ -81,7 +81,7 @@ function Dashboard() {
 
   async function deleteBook(id) {
    await fetch(
-     "https://librarymanagementbackend-production.up.railway.app//book/" + id,
+     "https://librarymanagementbackend-production.up.railway.app/book/" + id,
      {
        method: "DELETE",
      }
