@@ -41,7 +41,7 @@ function Dashboard() {
     }
   }
   function sendBookData() {
-    fetch("https://library-management-weld.vercel.app/book", {
+    fetch("https://librarymanagementbackend-production.up.railway.app/book", {
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
@@ -67,7 +67,9 @@ function Dashboard() {
   }
 
   async function getBookData() {
-    const res = await fetch("https://library-management-weld.vercel.app/book");
+    const res = await fetch(
+      "https://librarymanagementbackend-production.up.railway.app/book"
+    );
     const data = await res.json();
     setBooksCollection([...data]);
 
@@ -78,9 +80,12 @@ function Dashboard() {
   }, [bookData,isAdded, isDelete, isUpdate]);
 
   async function deleteBook(id) {
-   await fetch("https://library-management-weld.vercel.app/book/" + id, {
-     method: "DELETE",
-   })
+   await fetch(
+     "https://librarymanagementbackend-production.up.railway.app//book/" + id,
+     {
+       method: "DELETE",
+     }
+   )
      .then((res) => res.json())
      .then((res) => console.log(res));
     setIsDelete(!isDelete);
@@ -94,14 +99,18 @@ function Dashboard() {
     } else {
       setUpdatedBook({ ...updatedBook });
       console.log(updatedBook, "iddd");
-      fetch("https://library-management-weld.vercel.app/" + updatedBook._id, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      fetch(
+        "https://librarymanagementbackend-production.up.railway.app/" +
+          updatedBook._id,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
 
-        body: JSON.stringify(bookData),
-      });
+          body: JSON.stringify(bookData),
+        }
+      );
       getBookData();
       setBookData({ ...updateBook });
       setIsUpdate((prev) => !prev);

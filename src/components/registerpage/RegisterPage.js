@@ -26,7 +26,7 @@ function RegisterPage() {
     console.log("send data")
       try{
      const res = await fetch(
-       "https://library-management-weld.vercel.app/register",
+       "https://librarymanagementbackend-production.up.railway.app/register",
        {
          method: "POST",
          headers: {
