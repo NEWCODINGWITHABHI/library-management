@@ -1,59 +1,59 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./RegisterPage.css"
+import "./RegisterPage.css";
 function RegisterPage() {
-   const [user,setUser]=useState({
-    name:"",
-    username:"",
-    phonenumber:"",
-    email:"",
-    password:"",
-   })
-   const navigate = useNavigate();
-    function handleForm(e){
-      
-        setUser({
-            ...user,
-            [e.target.name]:e.target.value,
-        })
-    }
-    function formSubmit(e){
-     e.preventDefault();
-     console.log(user);
-     sendFormData();
-    }
-    async function sendFormData(){
-    console.log("send data")
-      try{
-     const res = await fetch(
-       "https://librarymanagementbackend-production.up.railway.app/register",
-       {
-         method: "POST",
-         headers: {
-           "Content-Type": "application/json",
-         },
-         body: JSON.stringify(user),
-       }
-     );
- 
-     const data=await res.json();
-     if(data.status==400){
-      alert(data.message);
-      return;
-     }
-     setUser({
-       name: "",
-       username: "",
-       email: "",
-       password: "",
-       phonenumber: "",
-     });
-     navigate("/login");
-      }catch(err){
-        console.log(err);
+  const [user, setUser] = useState({
+    name: "",
+    username: "",
+    phonenumber: "",
+    email: "",
+    password: "",
+  });
+  const navigate = useNavigate();
+  function handleForm(e) {
+    setUser({
+      ...user,
+      [e.target.name]: e.target.value,
+    });
+  }
+  function formSubmit(e) {
+    e.preventDefault();
+    console.log(user);
+    sendFormData();
+  }
+  async function sendFormData() {
+    console.log("send data");
+    try {
+      const res = await fetch(
+        "https://librarymanagementbackend-production.up.railway.app/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(user),
+        }
+      );
+
+      const data = await res.json();
+      console.log(data, "rrrrrr");
+      if (data.status == 201) {
+        alert(data.message);
+        return;
       }
-      
+      setUser({
+        name: "",
+        username: "",
+        email: "",
+        password: "",
+        phonenumber: "",
+      });
+
+      //  navigate("/login");
+    } catch (err) {
+      console.log(err);
     }
+  }
   return (
     <div className="register">
       <form action="" onSubmit={formSubmit}>
@@ -132,4 +132,4 @@ function RegisterPage() {
   );
 }
 
-export default RegisterPage
+export default RegisterPage;
