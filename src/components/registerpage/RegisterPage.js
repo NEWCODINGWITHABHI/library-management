@@ -36,10 +36,10 @@ function RegisterPage() {
       );
 
       const data = await res.json();
-      console.log(data, "rrrrrr");
+     console.log(data,"data......")
       if (data.status == 201) {
         alert(data.message);
-        return;
+        
       }
       setUser({
         name: "",
@@ -48,8 +48,6 @@ function RegisterPage() {
         password: "",
         phonenumber: "",
       });
-
-      //  navigate("/login");
     } catch (err) {
       console.log(err);
     }
