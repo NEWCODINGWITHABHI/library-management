@@ -3,24 +3,18 @@ import "./Dashboard.css";
 
 function Dashboard() {
   const [bookData, setBookData] = useState({
+    isUpdate: false,
     title: "",
     author: "",
     category: "",
     price: "",
   });
-  const [updatedBook, setUpdatedBook] = useState({
-    title: "",
-    author: "",
-    category: "",
-    price: "",
-    _id: "",
-  });
-  const [isUpdate, setIsUpdate] = useState(false);
-  const [isAdded, setIsAdded] = useState(true);
+
   const [isDelete, setIsDelete] = useState(false);
   const [booksCollection, setBooksCollection] = useState([]);
 
   function handleBookData(e) {
+    console.log(bookData, "handlebookdta");
     setBookData({
       ...bookData,
       [e.target.name]: e.target.value,
@@ -30,17 +24,15 @@ function Dashboard() {
   function submitBookData(e) {
     e.preventDefault();
 
-    if (!isUpdate) {
-      const { title, author, price, category } = bookData;
-      if (!title && !author && !price && !category) {
-        alert("Book field can not be empty ");
-        return;
-      }
+    const { title, author, price, category, isUpdate } = bookData;
 
-      sendBookData();
+    if (!title && !author && !price && !category) {
+      alert("Book field can not be empty ");
+      return;
     }
+    sendBookData(bookData);
   }
-  function sendBookData() {
+  function sendBookData(bookData) {
     fetch("https://librarymanagementbackend-production.up.railway.app/book", {
       headers: {
         Accept: "application/json",
@@ -55,14 +47,15 @@ function Dashboard() {
       .then((data) => {
         setBooksCollection([...data]);
       })
-      .catch(function (res) {
-        console.log(res);
+      .catch(function (err) {
+        console.log(err);
       });
     setBookData({
       title: "",
       author: "",
       price: "",
       category: "",
+      isUpdate: false,
     });
   }
 
@@ -71,51 +64,63 @@ function Dashboard() {
       "https://librarymanagementbackend-production.up.railway.app/book"
     );
     const data = await res.json();
+    console.log(data, "json fetching data");
     setBooksCollection([...data]);
-
   }
   useEffect(() => {
     getBookData();
-    console.log("object");
-  }, [bookData,isAdded, isDelete, isUpdate]);
+  }, [bookData, isDelete, updatedBook]);
 
   async function deleteBook(id) {
-   await fetch(
-     "https://librarymanagementbackend-production.up.railway.app/book/" + id,
-     {
-       method: "DELETE",
-     }
-   )
-     .then((res) => res.json())
-     .then((res) => console.log(res));
+    await fetch(
+      "https://librarymanagementbackend-production.up.railway.app/book/" + id,
+      {
+        method: "DELETE",
+      }
+    )
+      .then((res) => res.json())
+      .then((res) => res);
+
     setIsDelete(!isDelete);
   }
-  function updateBook(id, book) {
-    if (!isUpdate) {
-      setBookData({ ...book });
-      setUpdatedBook({ ...book });
-      setIsUpdate((prev) => !prev);
-      setIsAdded(false);
-    } else {
-      setUpdatedBook({ ...updatedBook });
-      console.log(updatedBook, "iddd");
-      fetch(
-        "https://librarymanagementbackend-production.up.railway.app/" +
-          updatedBook._id,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-
-          body: JSON.stringify(bookData),
-        }
+  async function updateBook(id, book) {
+    if (book.isUpdate == false) {
+      alert(
+        "For updating the book ,please write details in input box and then click on confirm button"
       );
-      getBookData();
-      setBookData({ ...updateBook });
-      setIsUpdate((prev) => !prev);
-      setIsAdded(true);
+      book.isUpdate = true;
+
+      await handleUpdateBook(id, book);
+      setBookData({ ...book, isUpdate: false });
+    } else {
+      alert("Book is updated successfully");
+
+      book.isUpdate = false;
+      book = { ...book, ...bookData };
+
+      await handleUpdateBook(id, book);
+      setBookData({
+        isUpdate: false,
+        title: "",
+        author: "",
+        category: "",
+        price: "",
+      });
     }
+  }
+  async function handleUpdateBook(id, book) {
+    await fetch(
+      "https://librarymanagementbackend-production.up.railway.app/updatebook/" +
+        book._id,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+
+        body: JSON.stringify(book),
+      }
+    );
   }
   return (
     <div className="dashboard">
@@ -165,13 +170,7 @@ function Dashboard() {
             />
           </div>
           <div className="input-control">
-            {isAdded == false ? (
-              <button type="button" onClick={() => updateBook()}>
-                Update Book
-              </button>
-            ) : (
-              <button>Add Book</button>
-            )}
+            <button>Add Book</button>
           </div>
         </form>
       </div>
@@ -193,8 +192,9 @@ function Dashboard() {
                   id="update"
                   onClick={() => updateBook(book._id, book)}
                 >
-                  Update
+                  {book.isUpdate == false ? "Update" : "Confirm"}
                 </button>
+
                 <button
                   type="button"
                   id="delete"
