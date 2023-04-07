@@ -69,7 +69,7 @@ function Dashboard() {
   }
   useEffect(() => {
     getBookData();
-  }, [bookData, isDelete, updatedBook]);
+  }, [bookData, isDelete]);
 
   async function deleteBook(id) {
     await fetch(
